@@ -1,0 +1,339 @@
+﻿@using UniversityCourseAndResultManagementSystem.Models
+
+@{
+    Layout = null;
+    List<Department> departments = ViewBag.departments;
+    List<Teacher> teachers = ViewBag.teachers;
+   // ViewBag.message = "";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CourseAssignToTeacher</title>
+    <style>
+        label.error {
+            color: red;
+            /*font-weight: bold;*/
+        }
+        ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+}
+
+li a, .dropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+    background-color: red;
+}
+
+li.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+    </style>
+
+</head>
+<body>
+<ul>
+    <li>
+        <a href="@Url.Action("Home", "Department")">Home</a>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Department</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("CreateDepartment", "Department")">Save Department</a>
+            <a href="@Url.Action("ViewDepartments", "Department")">View All Department</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Course</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("CreateCourse", "Course")">Save Course</a>
+            <a href="@Url.Action("ViewCourseStatics", "Course")">View Course Statics</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Teacher</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("CreateTeacher", "Teacher")">Save Teacher</a>
+            <a href="@Url.Action("CourseAssignToTeacher", "Teacher")">Course Assign to Teacher</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Student</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("RegisterStudent", "Student")">Register Student</a>
+            <a href="@Url.Action("EnrollStudentInCourse", "Student")">Enroll Student In a Course</a>
+
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Room</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("AllocateClassrooms", "Room")">Allocate Classrooms</a>
+            <a href="@Url.Action("ViewClassSchedule", "Room")">View Class Schedule and Room Allocation Information</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Result</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("SaveStudentResult", "Student")">Save Result</a>
+            <a href="@Url.Action("ViewResult", "Result")">View Result</a>
+        </div>
+    </li>
+</ul>
+<div>
+    <form method="POST" id="AssignTeacher">
+        <fieldset style="width: 600px">
+            <legend>
+                <h2>Course Assign to Teacher</h2></legend>
+            <table>
+                <tr>
+                    <td><label for="DepartmentId">Department</label></td>
+                    <td>
+                        <select id="DepartmentId" name="DepartmentId">
+                            <option value="">--Select--</option>
+                            @foreach (Department department in departments)
+                            {
+
+                                <option value="@department.Id">@department.Name</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+
+                @*<tr>
+                        <td><label for="TeacherId">Teacher</label></td>
+                        <td>
+                            @Html.DropDownList("Teacher", Viewbag.teachers as )
+                            <select id="TeacherId" name="TeacherId">
+                                <option value="">--Select--</option>
+                            @foreach (Teacher teacher in teachers)
+                                    {
+
+                                        <option value="@teacher.Id">@teacher.Name</option>
+                                    }
+                                </select>
+                        </td>
+                    </tr>*@
+                <tr>
+                    <td><label for="TeacherId">Teacher</label></td>
+                    <td>
+                        <select name="TeacherId" id="TeacherId">
+                            <option value="">--Select--</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="CreditToTaken"></label>Credit to be taken</td>
+                    <td><input type="text" id="CreditToTaken" name="CreditToTaken" readonly="readonly"/></td>
+                </tr>
+                <tr>
+                    <td><label for="RemainingCredit"></label>Remaining credit</td>
+                    <td><input type="text" id="RemainingCredit" name="RemainingCredit" readonly/></td>
+                </tr>
+                <tr>
+                    <td><label for="CourseId">Course Code</label></td>
+                    <td>
+                        <select name="CourseId" id="CourseId">
+                            <option value="">--Select--</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="CourseName"></label>Name</td>
+                    <td><input type="text" id="CourseName" name="CourseName" readonly/></td>
+                </tr>
+                <tr>
+                    <td><label for="CourseCredit"></label>Credit</td>
+                    <td><input type="text" id="CourseCredit" name="CourseCredit" readonly/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Assign" id="AssignButton"/></td>
+                </tr>
+            </table>
+            <h3>@ViewBag.message</h3>
+        </fieldset>
+
+    </form>
+</div>
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script>
+    $(document).ready(function() {
+
+
+        $('#AssignButton').click(function() {
+
+            if ($("#RemainingCredit").val() - $("#CourseCredit").val() < 0) {
+                //alert("work darn it!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+                var r = confirm("Want to assign more credit then remaining credit!");
+                if (r) {
+                    return true;
+                } else {
+                    location.reload();
+                    return false;
+                }
+
+            } else {
+                return true;
+            }
+            //$("#list").block({ message: '<img src="../../Images/ajax-loader.gif" />' })
+        });
+
+        $("#DepartmentId").change(function() {
+            var deptId = $("#DepartmentId").val();
+            $("#TeacherId").empty();
+            $('#RemainingCredit').empty();
+            $('#CreditToTaken').empty();
+            var json = { DepartmentId: deptId };
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetAllTeachersByDepartmentId", "Teacher")',
+                //url: '/Teacher/GetAllTeachersByDepartmentId',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function(result) {
+                    if (result.length > 0) {
+                        $('#TeacherId').html('');
+                        var options = '';
+                        options += '<option value="">Select</option>';
+                        // alert(result);
+                        //$('#TeacherId').append('<option value="">' +"--select--" + '</option>');
+                        $.each(result, function(key, value) {
+                            //$('#TeacherId').append('<option value="' + value.Id + '">' + value.Name + '</option>');
+                            options += '<option value="' + value.Id + '">' + value.Name + '</option>';
+                        });
+                        $('#TeacherId').append(options);
+                    }
+
+                }
+            });
+        });
+        $("#TeacherId").change(function() {
+            var teacherId = $("#TeacherId").val();
+            $('#RemainingCredit').val('');
+            $('#CreditToTaken').val('');
+
+            var json = { TeacherId: teacherId };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetTeacherDetails", "Teacher")',
+                //url: '/Department/GetStudentsByDepartmentId',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function(result) {
+                    $('#RemainingCredit').val(result.RemainingCredit);
+                    $('#CreditToTaken').val(result.CreditToBeTaken);
+
+                }
+            });
+        });
+
+        $("#DepartmentId").change(function() {
+            var deptId = $("#DepartmentId").val();
+            $("#TeacherId").empty();
+            $('#CourseId').empty();
+            $('#CreditToTaken').empty();
+            var json = { DepartmentId: deptId };
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetAllCousesByDepartmentId", "Teacher")',
+                //url: '/Teacher/GetAllTeachersByDepartmentId',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function(result) {
+                    if (result.length > 0) {
+                        $('#CourseId').html('');
+                        var options = '';
+                        options += '<option value="">Select</option>';
+                        //alert(result);
+                        //$('#CourseId').append('<option value="">' +"--select--" + '</option>');
+                        $.each(result, function(key, value) {
+                            //$('#CourseId').append('<option value="' + value.Id + '">' + value.Code + '</option>');
+                            options += '<option value="' + value.Id + '">' + value.Code + '</option>';
+                        });
+                        $('#CourseId').append(options);
+                    }
+                }
+            });
+        });
+        $("#CourseId").change(function() {
+            var courseId = $("#CourseId").val();
+
+            $('#CourseName').val('');
+            $('#CourseCredit').val('');
+            var json = { CourseId: courseId };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetCourseDetails", "Teacher")',
+                //url: '/Department/GetStudentsByDepartmentId',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function(result) {
+                    $('#CourseName').val(result.CourseName);
+                    $('#CourseCredit').val(result.CourseCredit);
+                }
+            });
+        });
+        $("#AssignTeacher").validate({
+            rules: {
+                TeacherId: "required",
+                DepartmentId: "required",
+                CourseId: "required"
+
+            },
+            messages: {
+                TeacherId: "Select Teacher",
+                DepartmentId: "Select a Department",
+                CourseId: "Select a Course"
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

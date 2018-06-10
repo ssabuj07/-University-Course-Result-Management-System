@@ -1,0 +1,228 @@
+﻿@using UniversityCourseAndResultManagementSystem.Models
+
+@{
+    Layout = null;
+    List<Student> students = ViewBag.students;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ViewResult</title>
+    <style>
+        ul {
+            list-style-type: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+            background-color: #333 !important;
+        }
+
+        li {
+            float: left !important;
+        }
+
+            li a, .dropbtn {
+                display: inline-block !important;
+                color: white !important;
+                text-align: center !important;
+                padding: 14px 16px !important;
+                text-decoration: none !important;
+            }
+
+                li a:hover, .dropdowns:hover .dropbtn {
+                    background-color: red !important;
+                }
+
+            li.dropdowns {
+                display: inline-block !important;
+            }
+
+        .dropdowns-content {
+            display: none !important;
+            position: absolute !important;
+            background-color: #f9f9f9 !important;
+            min-width: 160px !important;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2) !important;
+            z-index: 1 !important;
+        }
+
+            .dropdowns-content a {
+                color: black !important;
+                padding: 12px 16px !important;
+                text-decoration: none !important;
+                display: block !important;
+                text-align: left !important;
+            }
+
+                .dropdowns-content a:hover {
+                    background-color: #f1f1f1 !important;
+                }
+
+        .dropdowns:hover .dropdowns-content {
+            display: block !important;
+        }
+
+    </style>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+<ul>
+    <li>
+        <a href="@Url.Action("Home", "Department")">Home</a>
+    </li>
+    <li class="dropdowns">
+        <a href="javascript:void(0)" class="dropbtn">Department</a>
+        <div class="dropdowns-content">
+            <a href="@Url.Action("CreateDepartment", "Department")">Save Department</a>
+            <a href="@Url.Action("ViewDepartments", "Department")">View All Department</a>
+        </div>
+    </li>
+    <li class="dropdowns">
+        <a href="javascript:void(0)" class="dropbtn">Course</a>
+        <div class="dropdowns-content">
+            <a href="@Url.Action("CreateCourse", "Course")">Save Course</a>
+            <a href="@Url.Action("ViewCourseStatics", "Course")">View Course Statics</a>
+        </div>
+    </li>
+    <li class="dropdowns">
+        <a href="javascript:void(0)" class="dropbtn">Teacher</a>
+        <div class="dropdowns-content">
+            <a href="@Url.Action("CreateTeacher", "Teacher")">Save Teacher</a>
+            <a href="@Url.Action("CourseAssignToTeacher", "Teacher")">Course Assign to Teacher</a>
+        </div>
+    </li>
+    <li class="dropdowns">
+        <a href="javascript:void(0)" class="dropbtn">Student</a>
+        <div class="dropdowns-content">
+            <a href="@Url.Action("RegisterStudent", "Student")">Register Student</a>
+            <a href="@Url.Action("EnrollStudentInCourse", "Student")">Enroll Student In a Course</a>
+
+        </div>
+    </li>
+    <li class="dropdowns">
+        <a href="javascript:void(0)" class="dropbtn">Room</a>
+        <div class="dropdowns-content">
+            <a href="@Url.Action("AllocateClassrooms", "Room")">Allocate Classrooms</a>
+            <a href="@Url.Action("ViewClassSchedule", "Room")">View Class Schedule and Room Allocation Information</a>
+        </div>
+    </li>
+    <li class="dropdowns">
+        <a href="javascript:void(0)" class="dropbtn">Result</a>
+        <div class="dropdowns-content">
+            <a href="@Url.Action("SaveStudentResult", "Student")">Save Result</a>
+            <a href="@Url.Action("ViewResult", "Result")">View Result</a>
+        </div>
+    </li>
+</ul>
+<div>
+    <form method="POST">
+        <fieldset style="width: 800px">
+            <legend>View Result</legend>
+            <table>
+                <tr>
+                    <td><label for="StudentId">Student Reg. No</label></td>
+                    <td>
+                        <select id="StudentId" name="StudentId">
+                            <option value="">--Select--</option>
+                            @foreach (Student student in students)
+                            {
+                                <option value="@student.Id">@student.RegistrationNumber</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><label for="StudentName"></label>Name</td>
+                    <td><input type="text" id="StudentName" name="StudentName" readonly="readonly"/></td>
+                </tr>
+                <tr>
+                    <td><label for="StudentEmail"></label>Email</td>
+                    <td><input type="text" id="StudentEmail" name="StudentEmail" readonly/></td>
+                </tr>
+                <tr>
+                    <td><label for="StudentDepartment"></label>Department</td>
+                    <td><input type="text" id="StudentDepartment" name="StudentDepartment" readonly/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    @*<td><input type="button" value="Make PDF"/></td>*@
+                    @*<td><input type="button" value="Make PDF"
+                        onclick="@("location.href='" + Url.Action("CreatePdf", "Result") + "'")"/></td>*@
+
+                    <td> <input type="button" value="Make PDF" onclick="location.href = '@Url.Action("CreatePdf", "Result")?studentId=' + document.getElementById('StudentId').value"/></td>
+
+                </tr>
+            </table>
+
+            <table id="tblStudentResult" class="table table-hover table-responsive table-bordered">
+                <thead>
+                <tr>
+                    
+                        <td><b>Corse Code</b></td>
+                        <td><b>Name</b></td>
+                        <td><b>Grade</b></td>
+                    
+                </tr>
+                </thead>
+                <tbody id="tbStudentResult"></tbody>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script>
+
+    $(document).ready(function() {
+
+        $("#StudentId").change(function() {
+            var studentId = $("#StudentId").val();
+
+            $("#tbStudentResult").empty();
+
+            var json = { StudentId: studentId };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetStudentsByDepartmentId", "Result")',
+                //url: '/Department/GetStudentsByDepartmentId',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function(result) {
+                    //alert(result);
+                    $('#tblStudentResult').show();
+                    $.each(result, function(key, value) {
+                        $('#tbStudentResult').append('<tr><td>' + value.CourseCode + '</td><td>' + value.CourseName + '</td><td>' + value.Grade + '</td></tr>');
+                    });
+                }
+            });
+        });
+
+        $("#StudentId").change(function() {
+            var studentId = $("#StudentId").val();
+
+            $('#StudentName').val('');
+            $('#StudentEmail').val('');
+            $('#StudentDepartment').val('');
+            var json = { StudentId: studentId };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetStudentDetails", "Student")',
+                //url: '/Department/GetStudentsByDepartmentId',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function(result) {
+                    $('#StudentName').val(result.StudentName);
+                    $('#StudentEmail').val(result.StudentEmail);
+                    $('#StudentDepartment').val(result.StudentDepartment);
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

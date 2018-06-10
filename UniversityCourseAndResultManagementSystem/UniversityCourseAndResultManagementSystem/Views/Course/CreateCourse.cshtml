@@ -1,0 +1,222 @@
+﻿@using UniversityCourseAndResultManagementSystem.Models
+
+@{
+    Layout = null; 
+    List<Department> departments = ViewBag.departments;
+    List<Semester> semesters = ViewBag.semesters;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CreateCourse</title>
+    <style>
+        label.error {
+            color: red;
+            /*font-weight: bold;*/
+        }
+        ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+}
+
+li a, .dropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+    background-color: red;
+}
+
+li.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+    </style>
+
+</head>
+<body>
+<ul>
+    <li>
+        <a href="@Url.Action("Home", "Department")">Home</a>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Department</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("CreateDepartment", "Department")">Save Department</a>
+            <a href="@Url.Action("ViewDepartments", "Department")">View All Department</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Course</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("CreateCourse", "Course")">Save Course</a>
+            <a href="@Url.Action("ViewCourseStatics", "Course")">View Course Statics</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Teacher</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("CreateTeacher", "Teacher")">Save Teacher</a>
+            <a href="@Url.Action("CourseAssignToTeacher", "Teacher")">Course Assign to Teacher</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Student</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("RegisterStudent", "Student")">Register Student</a>
+            <a href="@Url.Action("EnrollStudentInCourse", "Student")">Enroll Student In a Course</a>
+
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Room</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("AllocateClassrooms", "Room")">Allocate Classrooms</a>
+            <a href="@Url.Action("ViewClassSchedule", "Room")">View Class Schedule and Room Allocation Information</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Result</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("SaveStudentResult", "Student")">Save Result</a>
+            <a href="@Url.Action("ViewResult", "Result")">View Result</a>
+        </div>
+    </li>
+</ul>
+<div>
+    <fieldset style="width: 500px">
+        <legend>
+            <h2>Save Course</h2>
+        </legend>
+        <form method="POST" id="CourseSaveForm">
+            <table>
+                <tr>
+                    <td><label for="Code">Code</label></td>
+                    <td><input type="text" id="Code" name="Code" style="width: 200px"/></td>
+                </tr>
+                <tr>
+                    <td><label for="Name">Name</label></td>
+                    <td><input type="text" id="Name" name="Name" style="width: 200px"/></td>
+                </tr>
+                <tr>
+                    <td><label for="Credit">Credit</label></td>
+                    <td><input type="text" id="Credit" name="Credit" style="width: 200px"/></td>
+                </tr>
+                <tr>
+                    <td><label for="Description">Description</label></td>
+                    <td><textarea cols="21" rows="4" id="Description" name="Description" style="width: 200px"></textarea></td>
+                </tr>
+
+                <tr>
+                    <td><label for="DepartmentId"></label>Department</td>
+                    <td>
+                        <select id="DepartmentId" name="DepartmentId" style="width: 200px">
+                            <option value="">Select Department</option>
+                            @foreach (Department department in departments)
+                            {
+                                <option value="@department.Id">@department.Name</option>
+                            }
+
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="SemesterId"></label>Semester</td>
+                    <td>
+                        <select id="SemesterId" name="SemesterId" style="width: 200px">
+                            <option value="">Select Semester</option>
+                            @foreach (Semester semester in semesters)
+                            {
+                                <option value="@semester.Id">@semester.Name</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Save"/></td>
+                </tr>
+            </table>
+            <h3>@ViewBag.message</h3>
+        </form>
+    </fieldset>
+</div>
+<script src="~/Scripts/jquery-1.12.4.js"></script>
+@*<script src="~/Scripts/jquery-1.12.4.min.js"></script>*@
+@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#CourseSaveForm").validate({
+            rules: {
+                Name: "required",
+                Code: {
+                    required: true,
+                    minlength: 5
+                },
+                Credit: {
+                    required: true,
+                    range: [0.5, 5.0],
+                    number: true
+                },
+                Description: "required",
+                DepartmentId: "required",
+                SemesterId: "required"
+            },
+            messages: {
+                Name: "Please enter Course name",
+                Code: {
+                    required: "Please enter Course Code",
+                    minlength: "Code Length must be 5 or more"
+                },
+                Credit: {
+                    required: "Enter a value between 0.5 to 5",
+                    number: "Enter number",
+                    range: "Enter a value between 0.5 to 5"
+                },
+                Description: "Provide Course description.",
+                DepartmentId: "Select a Department",
+                SemesterId: "Select a Semester"
+            }
+        });
+    });
+</script>
+</body>
+</html>

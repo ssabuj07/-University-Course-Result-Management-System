@@ -1,0 +1,272 @@
+﻿@using UniversityCourseAndResultManagementSystem.Models
+@{
+    Layout = null;
+    List<Department> departments = ViewBag.departments;
+    List<Room> rooms = ViewBag.rooms;
+    List<Days> days = ViewBag.days;
+}
+
+<html lang="en">
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+    <title>AllocateClassrooms</title>
+    <style>
+        label.error {
+            color: red;
+            /*font-weight: bold;*/
+        }
+        ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+}
+
+li a, .dropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+    background-color: red;
+}
+
+li.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+    </style>
+
+
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.3/jquery.timepicker.min.css">
+
+
+
+</head>
+<body>
+
+<ul>
+    <li>
+        <a href="@Url.Action("Home", "Department")">Home</a>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Department</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("CreateDepartment", "Department")">Save Department</a>
+            <a href="@Url.Action("ViewDepartments", "Department")">View All Department</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Course</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("CreateCourse", "Course")">Save Course</a>
+            <a href="@Url.Action("ViewCourseStatics", "Course")">View Course Statics</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Teacher</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("CreateTeacher", "Teacher")">Save Teacher</a>
+            <a href="@Url.Action("CourseAssignToTeacher", "Teacher")">Course Assign to Teacher</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Student</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("RegisterStudent", "Student")">Register Student</a>
+            <a href="@Url.Action("EnrollStudentInCourse", "Student")">Enroll Student In a Course</a>
+
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Room</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("AllocateClassrooms", "Room")">Allocate Classrooms</a>
+            <a href="@Url.Action("ViewClassSchedule", "Room")">View Class Schedule and Room Allocation Information</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Result</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("SaveStudentResult", "Student")">Save Result</a>
+            <a href="@Url.Action("ViewResult", "Result")">View Result</a>
+        </div>
+    </li>
+</ul>
+<div class="container text-center">
+
+    <form method="POST" id="AllocateRoom">
+        <fieldset style="width: 600px">
+            <legend>
+                <h2>Allocate Classrooms</h2></legend>
+            <table>
+                <tr>
+                    <td><label for="DepartmentId">Department</label></td>
+                    <td>
+                        <select id="DepartmentId" name="DepartmentId">
+                            <option value="">--Select--</option>
+                            @foreach (Department department in departments)
+                            {
+
+                                <option value="@department.Id">@department.Name</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="CourseId">Course</label></td>
+                    <td>
+                        <select name="CourseId" id="CourseId">
+                            <option value="">--Select--</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="RoomId">Room No.</label></td>
+                    <td>
+                        <select id="RoomId" name="RoomId">
+                            <option value="">--Select--</option>
+                            @foreach (Room room in rooms)
+                            {
+                                <option value="@room.Id">@room.Name</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="DayId">Day</label></td>
+                    <td>
+                        <select id="DayId" name="DayId">
+                            <option value="">--Select--</option>
+                            @foreach (Days day in days)
+                            {
+                                <option value="@day.Id">@day.Name</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>From</td>
+                    <td><input type="text" id="FromTime" class="timepicker" name="FromTime"> </td>
+                </tr>
+                <tr>
+                    <td>To</td>
+                    <td><input type="text" id="ToTime" class="timepicker" name="ToTime"> </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Allocate" /></td>
+                </tr>
+            </table>
+            <h3>@ViewBag.message</h3>
+        </fieldset>
+
+    </form>
+
+    @*<h2>Jquery - Timepicker Example using jQuery Timepicker Plugin</h2>
+    <strong>Select Time:</strong> <input type="text" id="timepicker" class="from-control">*@
+</div>
+
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    @*<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>*@
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.3/jquery.timepicker.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".timepicker").timepicker({
+                timeFormat: 'h:mm p',
+                interval: 30,
+                minTime: '9',
+                maxTime: '6:00pm',
+                defaultTime: '0',
+                startTime: '9:00',
+                dynamic: true,
+                dropdown: true,
+                scrollbar: true
+            });
+            $("#DepartmentId").change(function () {
+                var deptId = $("#DepartmentId").val();
+               
+                $('#CourseId').empty();
+               
+                var json = { DepartmentId: deptId };
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetAllCousesByDepartmentId", "Teacher")',
+                    //url: '/Teacher/GetAllTeachersByDepartmentId',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (result) {
+                        if (result.length > 0) {
+                            $('#CourseId').html('');
+                            var options = '';
+                            options += '<option value="">Select</option>';
+                            //alert(result);
+                            //$('#CourseId').append('<option value="">' +"--select--" + '</option>');
+                            $.each(result, function (key, value) {
+                                //$('#CourseId').append('<option value="' + value.Id + '">' + value.Code + '</option>');
+                                options += '<option value="' + value.Id + '">' + value.Name + '</option>';
+                            });
+                            $('#CourseId').append(options);
+                        }
+                    }
+                });
+            });
+            $("#AllocateRoom").validate({
+                    rules: {
+                        DepartmentId: "required",
+                        CourseId: "required",
+                        RoomId:"required",
+                        DayId: "required",
+                        FromTime:"required",
+                        ToTime: "required"
+                    
+                    },
+                    messages: {
+                        DepartmentId: "Select a Department",
+                        CourseId: "Select a Course",
+                        RoomId: "Select Room",
+                        DayId: "Select Day",
+                        FromTime: "Select class Start Time",
+                        ToTime: "Select class End Time"
+                    }
+                });
+        });
+    </script>
+
+
+</body>
+</html>

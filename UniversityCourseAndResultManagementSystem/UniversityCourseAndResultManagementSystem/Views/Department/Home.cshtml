@@ -1,0 +1,150 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Home</title>
+    <style>
+        
+        body {
+  font: 25px Arial, sans-serif;
+}
+
+#container {
+  color: blue;
+  background:grey
+  /*width: 400px;
+  height: 260px;*/
+}
+
+#content {
+  /*background: #06c;*/
+  /*width: 120px;*/
+   /*align-items: center;*/
+    font: 40px Arial, sans-serif;
+  margin-left: 250px;
+  margin-right: 100px;
+    position: relative;
+    margin-top: 250px;
+ 
+  /*transform: translateY(-50%)*/;
+}
+
+
+         
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        li {
+            float: left;
+        }
+
+        li a, .dropbtn {
+            display: inline-block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li a:hover, .dropdown:hover .dropbtn {
+            background-color: red;
+        }
+
+        li.dropdown {
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<ul>
+    <li>
+        <a href="@Url.Action("Home", "Department")">Home</a>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Department</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("CreateDepartment", "Department")">Save Department</a>
+            <a href="@Url.Action("ViewDepartments", "Department")">View All Department</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Course</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("CreateCourse", "Course")">Save Course</a>
+            <a href="@Url.Action("ViewCourseStatics", "Course")">View Course Statics</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Teacher</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("CreateTeacher", "Teacher")">Save Teacher</a>
+            <a href="@Url.Action("CourseAssignToTeacher", "Teacher")">Course Assign to Teacher</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Student</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("RegisterStudent", "Student")">Register Student</a>
+            <a href="@Url.Action("EnrollStudentInCourse", "Student")">Enroll Student In a Course</a>
+
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Room</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("AllocateClassrooms", "Room")">Allocate Classrooms</a>
+            <a href="@Url.Action("ViewClassSchedule", "Room")">View Class Schedule and Room Allocation Information</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Result</a>
+        <div class="dropdown-content">
+            <a href="@Url.Action("SaveStudentResult", "Student")">Save Result</a>
+            <a href="@Url.Action("ViewResult", "Result")">View Result</a>
+        </div>
+    </li>
+</ul>
+    <div id="container">
+        <div id="content">
+            University Course & Result Management System
+        </div>
+    </div>
+</body>
+</html>
